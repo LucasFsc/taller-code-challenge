@@ -1,33 +1,16 @@
 import { Injectable } from '@nestjs/common';
+import { UsersRepository } from '../database/repositories/users.repository';
 import { User } from './models/user.model';
-
-const users: Array<User> = [
-  {
-    id: 1,
-    name: 'Lucas',
-    email: 'lucas@mail.com',
-    age: 27,
-  },
-  {
-    id: 2,
-    name: 'Alex',
-    email: 'alex@mail.com',
-  },
-  {
-    id: 3,
-    name: 'Souza',
-    email: 'souza@mail.com',
-    age: 67,
-  },
-];
 
 @Injectable()
 export class UsersService {
+  constructor(private readonly usersRepository: UsersRepository) {}
+
   getUser(id: number): User | undefined {
-    return users.find((user) => user.id === id);
+    return this.usersRepository.findUserById(id);
   }
 
-  listUsers(limit: number) {
-    return users.slice(0, limit);
+  listUsers(limit: number): User[] {
+    return this.usersRepository.findUsers(limit);
   }
 }
